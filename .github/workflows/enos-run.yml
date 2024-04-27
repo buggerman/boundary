@@ -116,7 +116,7 @@ jobs:
             ${{ runner.os }}-go
           fail-on-cache-miss: true
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1    # TSCCR: loading action configs: failed to query HEAD reference: failed to get advertised references: authorization failed
+        uses: hashicorp/setup-terraform@97f030cf6dc0b4f5e0da352c7bca9cca34579800    # TSCCR: loading action configs: failed to query HEAD reference: failed to get advertised references: authorization failed
         with:
           # the terraform wrapper will break Terraform execution in enos because
           # it changes the output to text when we expect it to be JSON.

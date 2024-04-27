@@ -19,7 +19,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.SERVICE_USER_GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
-      - uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1    # TSCCR: loading action configs: failed to query HEAD reference: failed to get advertised references: authorization failed
+      - uses: hashicorp/setup-terraform@97f030cf6dc0b4f5e0da352c7bca9cca34579800    # TSCCR: loading action configs: failed to query HEAD reference: failed to get advertised references: authorization failed
         with:
           terraform_wrapper: false
       - uses: hashicorp/action-setup-enos@v1    # TSCCR: loading action configs: failed to query HEAD reference: failed to get advertised references: authorization failed
