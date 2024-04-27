@@ -1,0 +1,669 @@
+[
+  {
+    "title": "Introduction",
+    "routes": [
+      {
+        "title": "What is Boundary?",
+        "path": "overview/what-is-boundary"
+      },
+      {
+        "title": "Use cases",
+        "path": "overview/use-cases"
+      },
+      {
+        "title": "Boundary vs. other software",
+        "routes": [
+          {
+            "title": "Overview",
+            "path": "overview/vs/other-software"
+          },
+          {
+            "title": "Zero trust",
+            "path": "overview/vs/zero-trust"
+          },
+          {
+            "title": "Bastion hosts",
+            "path": "overview/vs/bastion-hosts"
+          },
+          {
+            "title": "VPNs",
+            "path": "overview/vs/vpn"
+          },
+          {
+            "title": "Privileged access management",
+            "path": "overview/vs/pam"
+          },
+          {
+            "title": "Software-defined perimeter",
+            "path": "overview/vs/sdp"
+          },
+          {
+            "title": "Secrets management tools",
+            "path": "overview/vs/secrets-management"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Get started",
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "getting-started"
+      },
+      {
+        "title": "Self-managed Boundary quick start",
+        "href": "https://developer.hashicorp.com/boundary/tutorials/oss-getting-started/"
+      },
+      {
+        "title": "HCP Boundary quick start",
+        "href": "https://developer.hashicorp.com/boundary/tutorials/hcp-getting-started/"
+      },
+      {
+        "title": "Dev mode quick start",
+        "routes": [
+          {
+            "title": "Overview",
+            "path": "getting-started/dev-mode/dev-mode"
+          },
+          {
+            "title": "Run and log in",
+            "path": "getting-started/dev-mode/run-and-login"
+          },
+          {
+            "title": "Connect to a target",
+            "path": "getting-started/dev-mode/connect-to-dev-target"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Install Boundary",
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "install-boundary"
+      },
+      {
+        "title": "Recommended architecture",
+        "path": "install-boundary/recommended-architecture"
+      },
+      {
+        "title": "System requirements",
+        "path": "install-boundary/system-requirements"
+      },
+      {
+        "title": "Fault tolerance recommendations",
+        "path": "install-boundary/fault-tolerance"
+      },
+      {
+        "title": "Install Boundary",
+        "path": "install-boundary/install"
+      },
+      {
+        "title": "Configure controllers",
+        "path": "install-boundary/configure-controllers"
+      },
+      {
+        "title": "Configure workers",
+        "path": "install-boundary/configure-workers"
+      },
+      {
+        "title": "Non-dev environments",
+        "path": "install-boundary/no-gen-resources"
+      },
+      {
+        "title": "Systemd install",
+        "hidden": true,
+        "path": "install-boundary/systemd"
+      },
+      {
+        "title": "Configure high availability",
+        "path": "install-boundary/high-availability"
+      }
+    ]
+  },
+  {
+    "title": "Concepts",
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "concepts"
+      },
+      {
+        "title": "Identity and access management",
+        "path": "concepts/iam"
+      },
+      {
+        "title": "Host discovery",
+        "path": "concepts/host-discovery"
+      },
+      {
+        "title": "Credential management",
+        "path": "concepts/credential-management"
+      },
+      {
+        "title": "Auditing",
+        "path": "concepts/auditing"
+      },
+      {
+        "title": "Security",
+        "routes": [
+          {
+            "title": "Overview",
+            "path": "concepts/security"
+          },
+          {
+            "title": "Permissions",
+            "routes": [
+              {
+                "title": "Overview",
+                "path": "concepts/security/permissions"
+              },
+              {
+                "title": "Assignable permissions",
+                "path": "concepts/security/permissions/assignable-permissions"
+              },
+              {
+                "title": "Permission grant formats",
+                "path": "concepts/security/permissions/permission-grant-formats"
+              },
+              {
+                "title": "Resource table",
+                "path": "concepts/security/permissions/resource-table"
+              }
+            ]
+          },
+          {
+            "title": "Data encryption",
+            "path": "concepts/security/data-encryption"
+          },
+          {
+            "title": "Connections/TLS",
+            "path": "concepts/security/connections-tls"
+          }
+        ]
+      },
+      {
+        "title": "Domain model",
+        "routes": [
+          {
+            "title": "Overview",
+            "path": "concepts/domain-model"
+          },
+          {
+            "title": "Accounts",
+            "path": "concepts/domain-model/accounts"
+          },
+          {
+            "title": "Auth methods",
+            "path": "concepts/domain-model/auth-methods"
+          },
+          {
+            "title": "Credentials",
+            "path": "concepts/domain-model/credentials"
+          },
+          {
+            "title": "Credential libraries",
+            "path": "concepts/domain-model/credential-libraries"
+          },
+          {
+            "title": "Credential stores",
+            "path": "concepts/domain-model/credential-stores"
+          },
+          {
+            "title": "Groups",
+            "path": "concepts/domain-model/groups"
+          },
+          {
+            "title": "Hosts",
+            "path": "concepts/domain-model/hosts"
+          },
+          {
+            "title": "Host catalogs",
+            "path": "concepts/domain-model/host-catalogs"
+          },
+          {
+            "title": "Host sets",
+            "path": "concepts/domain-model/host-sets"
+          },
+          {
+            "title": "Managed groups",
+            "path": "concepts/domain-model/managed-groups"
+          },
+          {
+            "title": "Scopes",
+            "path": "concepts/domain-model/scopes"
+          },
+          {
+            "title": "Sessions",
+            "path": "concepts/domain-model/sessions"
+          },
+          {
+            "title": "Session connections",
+            "path": "concepts/domain-model/session-connections"
+          },
+          {
+            "title": "Session recordings",
+            "path": "concepts/domain-model/session-recordings"
+          },
+          {
+            "title": "Storage buckets",
+            "path": "concepts/domain-model/storage-buckets"
+          },
+          {
+            "title": "Targets",
+            "path": "concepts/domain-model/targets"
+          },
+          {
+            "title": "Roles",
+            "path": "concepts/domain-model/roles"
+          },
+          {
+            "title": "Users",
+            "path": "concepts/domain-model/users"
+          }
+        ]
+      },
+      {
+        "title": "Filtering",
+        "routes": [
+          {
+            "title": "Overview",
+            "path": "concepts/filtering"
+          },
+          {
+            "title": "OIDC managed groups",
+            "path": "concepts/filtering/oidc-managed-groups"
+          },
+          {
+            "title": "Resource listing",
+            "path": "concepts/filtering/resource-listing"
+          },
+          {
+            "title": "Worker tags",
+            "path": "concepts/filtering/worker-tags"
+          },
+          {
+            "title": "Events",
+            "path": "concepts/filtering/events"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Configuration",
+    "routes": [
+      {
+        "title": "Overview/top-level parameters",
+        "path": "configuration"
+      },
+      {
+        "title": "Worker",
+        "routes": [
+          {
+            "title": "Overview",
+            "path": "configuration/worker"
+          },
+          {
+            "title": "PKI workers",
+            "path": "configuration/worker/pki-worker"
+          },
+          {
+            "title": "KMS workers",
+            "path": "configuration/worker/kms-worker"
+          }
+        ]
+      },
+      {
+        "title": "Listener",
+        "routes": [
+          {
+            "title": "Overview",
+            "path": "configuration/listener"
+          },
+          {
+            "title": "TCP",
+            "path": "configuration/listener/tcp"
+          },
+          {
+            "title": "Unix",
+            "path": "configuration/listener/unix"
+          }
+        ]
+      },
+      {
+        "title": "KMS",
+        "routes": [
+          {
+            "title": "Overview",
+            "path": "configuration/kms"
+          },
+          {
+            "title": "AEAD",
+            "path": "configuration/kms/aead"
+          },
+          {
+            "title": "AWS KMS",
+            "path": "configuration/kms/awskms"
+          },
+          {
+            "title": "AliCloud KMS",
+            "path": "configuration/kms/alicloudkms"
+          },
+          {
+            "title": "Azure Key Vault",
+            "path": "configuration/kms/azurekeyvault"
+          },
+          {
+            "title": "GCP Cloud KMS",
+            "path": "configuration/kms/gcpckms"
+          },
+          {
+            "title": "OCI KMS",
+            "path": "configuration/kms/ocikms"
+          },
+          {
+            "title": "Vault transit",
+            "path": "configuration/kms/transit"
+          }
+        ]
+      },
+      {
+        "title": "Session recordings",
+        "routes": [
+          {
+            "title": "Overview",
+            "path": "configuration/session-recording"
+          },
+          {
+            "title": "Create storage buckets",
+            "path": "configuration/session-recording/create-storage-bucket"
+          },
+          {
+            "title": "Enable session recording",
+            "path": "configuration/session-recording/enable-session-recording"
+          }
+        ]
+      },
+      {
+        "title": "Events",
+        "routes": [
+          {
+            "title": "Overview",
+            "path": "configuration/events"
+          },
+          {
+            "title": "Common sink parameters",
+            "path": "configuration/events/common"
+          },
+          {
+            "title": "File sink",
+            "path": "configuration/events/file"
+          },
+          {
+            "title": "Stderr sink",
+            "path": "configuration/events/stderr"
+          }
+        ]
+      },
+      {
+        "title": "Controller",
+        "path": "configuration/controller"
+      },
+      {
+        "title": "Plugins",
+        "path": "configuration/plugins"
+      }
+    ]
+  },
+  {
+    "title": "Operations",
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "operations"
+      },
+      {
+        "title": "Metrics",
+        "path": "operations/metrics"
+      },
+      {
+        "title": "Health endpoint",
+        "path": "operations/health"
+      },
+      {
+        "title": "Session recordings",
+        "path": "operations/manage-recorded-sessions"
+      }
+    ]
+  },
+  {
+    "title": "Troubleshoot",
+    "routes": [
+      {
+        "title": "Common error messages",
+        "path": "troubleshoot/common-errors"
+      },
+      {
+        "title": "FAQ",
+        "path": "troubleshoot/faq"
+      },
+      {
+        "title": "Recorded sessions",
+        "path": "troubleshoot/troubleshoot-recorded-sessions"
+      }
+    ]
+  },
+  {
+    "title": "Common workflows",
+    "hidden": true,
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "common-workflows"
+      },
+      {
+        "title": "Manage roles",
+        "path": "common-workflows/manage-roles"
+      },
+      {
+        "title": "Manage scopes",
+        "path": "common-workflows/manage-scopes"
+      },
+      {
+        "title": "Manage sessions",
+        "path": "common-workflows/manage-sessions"
+      },
+      {
+        "title": "Manage targets",
+        "path": "common-workflows/manage-targets"
+      },
+      {
+        "title": "Manage users and groups",
+        "path": "common-workflows/manage-users-groups"
+      },
+      {
+        "title": "Workflow SSH proxy",
+        "path": "common-workflows/workflow-ssh-proxycommand"
+      }
+    ]
+  },
+  {
+    "title": "API/clients",
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "api-clients"
+      },
+      {
+        "title": "API",
+        "path": "api-clients/api"
+      },
+      {
+        "title": "CLI",
+        "path": "api-clients/cli"
+      },
+      {
+        "title": "Go SDK",
+        "path": "api-clients/go-sdk"
+      },
+      {
+        "title": "Desktop",
+        "hidden": true,
+        "path": "api-clients/desktop"
+      },
+      {
+        "title": "Desktop",
+        "href": "https://learn.hashicorp.com/tutorials/boundary/hcp-getting-started-desktop-app"
+      }
+    ]
+  },
+  {
+    "title": "Develop Boundary",
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "developing"
+      },
+      {
+        "title": "Build Boundary",
+        "path": "developing/building"
+      },
+      {
+        "title": "Develop the UI",
+        "path": "developing/ui"
+      }
+    ]
+  },
+  {
+    "divider": true
+  },
+  {
+    "title": "Boundary OSS",
+    "hidden": true,
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "oss"
+      }
+    ]
+  },
+  {
+    "title": "HCP Boundary",
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "hcp"
+      },
+      {
+        "title": "Get started",
+        "routes": [
+          {
+            "title": "Deploy and login",
+            "path": "hcp/get-started/deploy-and-login"
+          },
+          {
+            "title": "Connect to target",
+            "path": "hcp/get-started/connect-to-target"
+          }
+        ]
+      },
+      {
+        "title": "Documentation",
+        "href": "https://cloud.hashicorp.com/docs/boundary/"
+      }
+    ]
+  },
+  {
+    "divider": true
+  },
+  {
+    "title": "Boundary Enterprise",
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "enterprise"
+      },
+      {
+        "title": "Licensing",
+        "path": "enterprise/licensing"
+      },
+      {
+        "title": "Automated license reporting",
+        "path": "enterprise/automated-license-reporting"
+      },
+      {
+        "title": "Supported versions policy",
+        "path": "enterprise/supported-versions"
+      }
+    ]
+  },
+  {
+    "divider": true
+  },
+  {
+    "title": "Release notes",
+    "routes": [
+      {
+        "title": "Overview",
+        "path": "release-notes"
+      },
+      {
+        "title": "v0.13.0",
+        "path": "release-notes/v0_13_0"
+      },
+      {
+        "title": "v0.12.0",
+        "path": "release-notes/v0_12_0"
+      },
+      {
+        "title": "v0.11.0",
+        "path": "release-notes/v0_11_0"
+      },
+      {
+        "title": "v0.10.0",
+        "path": "release-notes/v0_10_0"
+      },
+      {
+        "title": "v0.9.0",
+        "path": "release-notes/v0_9_0"
+      },
+      {
+        "title": "v0.8.0",
+        "path": "release-notes/v0_8_0"
+      },
+      {
+        "title": "v0.7.0",
+        "path": "release-notes/v0_7_0"
+      },
+      {
+        "title": "v0.6.0",
+        "path": "release-notes/v0_6_0"
+      },
+      {
+        "title": "v0.5.0",
+        "path": "release-notes/v0_5_0"
+      },
+      {
+        "title": "v0.4.0",
+        "path": "release-notes/v0_4_0"
+      },
+      {
+        "title": "v0.3.0",
+        "path": "release-notes/v0_3_0"
+      },
+      {
+        "title": "v0.2.0",
+        "path": "release-notes/v0_2_0"
+      },
+      {
+        "title": "v0.1.0",
+        "path": "release-notes/v0_1_0"
+      }
+    ]
+  }
+]

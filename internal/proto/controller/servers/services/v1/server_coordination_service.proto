@@ -1,0 +1,204 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
+syntax = "proto3";
+
+package controller.servers.services.v1;
+
+import "controller/servers/v1/servers.proto";
+
+option go_package = "github.com/hashicorp/boundary/internal/gen/controller/servers/services;services";
+
+service ServerCoordinationService {
+  // Status gets worker status requests which include the ongoing jobs the worker is handling and
+  // returns the status response which includes the changes the controller would like to make to
+  // jobs as well as provide a list of the controllers in the system.
+  rpc Status(StatusRequest) returns (StatusResponse) {}
+
+  // Returns the addresses of HCP Boundary workers, if any
+  rpc ListHcpbWorkers(ListHcpbWorkersRequest) returns (ListHcpbWorkersResponse) {}
+}
+
+enum CONNECTIONSTATUS {
+  CONNECTIONSTATUS_UNSPECIFIED = 0;
+  CONNECTIONSTATUS_AUTHORIZED = 1;
+  CONNECTIONSTATUS_CONNECTED = 2;
+  CONNECTIONSTATUS_CLOSED = 3;
+}
+
+message Connection {
+  string connection_id = 1; // @gotags: `class:"public"`
+  CONNECTIONSTATUS status = 2;
+  int64 bytes_up = 3; // @gotags: `class:"public"`
+  int64 bytes_down = 4; // @gotags: `class:"public"`
+}
+
+enum SESSIONSTATUS {
+  SESSIONSTATUS_UNSPECIFIED = 0;
+  SESSIONSTATUS_PENDING = 1;
+  SESSIONSTATUS_ACTIVE = 2;
+  SESSIONSTATUS_CANCELING = 3;
+  SESSIONSTATUS_TERMINATED = 4;
+}
+
+message SessionJobInfo {
+  string session_id = 1; // @gotags: `class:"public"`
+  SESSIONSTATUS status = 2;
+  repeated Connection connections = 3;
+  SessionProcessingError processing_error = 4; // @gotags: `class:"public"`
+}
+
+enum SessionProcessingError {
+  SESSION_PROCESSING_ERROR_UNSPECIFIED = 0;
+  SESSION_PROCESSING_ERROR_UNRECOGNIZED = 1;
+}
+
+message MonitorSessionJobInfo {
+  string session_id = 1; // @gotags: `class:"public"`
+  SESSIONSTATUS status = 2; // @gotags: `class:"public"`
+  SessionProcessingError processing_error = 3; // @gotags: `class:"public"`
+}
+
+enum JOBTYPE {
+  JOBTYPE_UNSPECIFIED = 0;
+  JOBTYPE_SESSION = 1;
+  JOBTYPE_MONITOR_SESSION = 2;
+}
+
+message Job {
+  JOBTYPE type = 1;
+  oneof job_info {
+    // This value is specified when type is JOBTYPE_SESSION.
+    SessionJobInfo session_info = 2;
+    MonitorSessionJobInfo monitor_session_info = 3;
+  }
+}
+
+message JobStatus {
+  Job job = 1;
+}
+
+// UpstreamServer returns the controller address in the StatusResponse but may be used in the future to return
+// worker address.
+message UpstreamServer {
+  enum TYPE {
+    TYPE_UNSPECIFIED = 0;
+    TYPE_CONTROLLER = 1;
+    TYPE_WORKER = 2;
+  }
+
+  // type specifies between controller or worker.
+  TYPE type = 10;
+
+  // Address of the daemon
+  string address = 20; // @gotags: `class:"public"`
+}
+
+message StatusRequest {
+  reserved 10;
+  reserved "worker";
+
+  // Jobs which this worker wants to report the status.
+  repeated JobStatus jobs = 20;
+
+  // Whether to update tags from the Server block on this RPC. We only need to
+  // do this at startup or (at some point) SIGHUP, so specifying when it's
+  // changed allows us to avoid constant database operations for something that
+  // won't change very often, if ever.
+  bool update_tags = 30;
+
+  // Replaces the old worker field:
+  // The worker info. We could use information from the TLS connection but this
+  // is easier and going the other route doesn't provide much benefit -- if you
+  // get access to the key and spoof the connection, you're already compromised.
+  servers.v1.ServerWorkerStatus worker_status = 40;
+
+  // The worker key identifiers presented by all downstreams connected to this
+  // worker.
+  // Deprecated. Should be removed in 0.15.0 at which time
+  // connected_unmapped_worker_key_identifiers should be used exclusively.
+  repeated string connected_worker_key_identifiers = 50 [deprecated = true];
+
+  // The worker key identifiers for downstream workers for which there
+  // is not a known worker id mapping for them yet.
+  repeated string connected_unmapped_worker_key_identifiers = 51;
+
+  // The worker public ids of all downstreams connected to this worker if known.
+  // While there may be workers with key ids in the connected_worker_key_identifiers
+  // list and their public ids in this list, once the requesting worker is aware
+  // of the association, it should only populate this field.
+  repeated string connected_worker_public_ids = 55;
+}
+
+enum CHANGETYPE {
+  CHANGETYPE_UNSPECIFIED = 0;
+  // Indicates to the worker to update its knowledge of the state, which may
+  // cause action to be taken.
+  CHANGETYPE_UPDATE_STATE = 1;
+}
+
+message JobChangeRequest {
+  Job job = 1;
+  CHANGETYPE request_type = 2;
+}
+
+message AuthorizedWorkerList {
+  option deprecated = true;
+  // the key id of authorized workers
+  repeated string worker_key_identifiers = 1 [deprecated = true];
+}
+
+message AuthorizedDownstreamWorkerList {
+  // the key id of authorized workers which do not have a worker id known yet
+  // to the requester.
+  repeated string unmapped_worker_key_identifiers = 1;
+  // the public id of workers that were reported as being connected and which
+  // are known by the controller.
+  repeated string worker_public_ids = 2;
+}
+
+message StatusResponse {
+  reserved 10;
+  reserved "controllers";
+
+  // List of jobs and the expected state changes.  For example, this will
+  // include jobs witch change type of canceled for jobs which are active on a
+  // worker but should be canceled. This could also contain a request to start a
+  // job such as a worker -> worker proxy for establishing a session through an
+  // enclave.
+  repeated JobChangeRequest jobs_requests = 20;
+
+  // UpstreamServer currently returns the controller address in the StatusResponse.
+  repeated UpstreamServer calculated_upstreams = 30;
+
+  // The ID of the worker which made the request. The worker can send this value in subsequent requests so the
+  // controller does not need to do a database lookup for the id using the name field.
+  string worker_id = 40; // @gotags: `class:"public"`
+
+  // Of the worker key identifiers provided in the request, these are the ones
+  // which are authorized to remain connected.
+  // This is deprecated.  Use authorized_downstream_workers instead. This
+  // should be removed in version 0.15.0.
+  AuthorizedWorkerList authorized_workers = 50 [deprecated = true];
+
+  // Of the downstream workers in the request, these are the ones
+  // which are authorized to remain connected.
+  AuthorizedDownstreamWorkerList authorized_downstream_workers = 51;
+}
+
+// WorkerInfo contains information about workers for the HcpbWorkerResponse message
+message WorkerInfo {
+  // The id of the worker
+  string id = 1;
+
+  // The public address of the worker
+  string address = 2;
+}
+
+// A HCP Boundary workers request. Empty for now.
+message ListHcpbWorkersRequest {}
+
+// A response containing worker information
+message ListHcpbWorkersResponse {
+  repeated WorkerInfo workers = 1;
+}

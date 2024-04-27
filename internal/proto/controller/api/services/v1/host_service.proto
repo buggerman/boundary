@@ -1,0 +1,118 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
+syntax = "proto3";
+
+package controller.api.services.v1;
+
+import "controller/api/resources/hosts/v1/host.proto";
+import "controller/custom_options/v1/options.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option (custom_options.v1.domain) = "host";
+
+service HostService {
+  // GetHost returns a stored Host if present.  The provided request
+  // must include the host ID for the resource being retrieved. If the ID is
+  // missing, malformed or referencing anon existing resource an error is
+  // returned.
+  rpc GetHost(GetHostRequest) returns (GetHostResponse) {
+    option (google.api.http) = {
+      get: "/v1/hosts/{id}"
+      response_body: "item"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Gets a single Host."};
+  }
+
+  // ListHosts returns a list of stored hosts which exist inside the provided
+  // Host Catalog. The request must include the Host Catalog id containing the
+  // Hosts being listed.  If the id is missing, malformed, or reference a
+  // non-existing resource, an error is returned.
+  rpc ListHosts(ListHostsRequest) returns (ListHostsResponse) {
+    option (google.api.http) = {get: "/v1/hosts"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "List all Hosts for the specified Catalog."};
+  }
+
+  // CreateHost creates and stores a Host in boundary.  The provided
+  // request must include the Host Catalog id in which the Host
+  // will be created.  If the Catalog id is missing, malformed or references a
+  // non-existing resource, an error is returned.  If a name is provided that
+  // is in use by another Host in the same Host Catalog, an error is returned.
+  rpc CreateHost(CreateHostRequest) returns (CreateHostResponse) {
+    option (google.api.http) = {
+      post: "/v1/hosts"
+      body: "item"
+      response_body: "item"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Create a single Host."};
+  }
+
+  // UpdateHost updates an existing Host in boundary.  The provided
+  // Host must not have any read only fields set.  The update mask must be
+  // included in the request and contain at least 1 mutable field.  To unset
+  // a field's value, include the field in the update mask and don't set it
+  // in the provided Host. An error is returned if the Host id is missing or
+  // reference a non-existing resource.  An error is also returned if the
+  // request attempts to update the name to one that is already in use in
+  // the same Host Catalog.
+  rpc UpdateHost(UpdateHostRequest) returns (UpdateHostResponse) {
+    option (google.api.http) = {
+      patch: "/v1/hosts/{id}"
+      body: "item"
+      response_body: "item"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Update a Host."};
+  }
+
+  // DeleteHost removes a Host from Boundary. If the provided Host ID
+  // is malformed or not provided an error is returned.
+  rpc DeleteHost(DeleteHostRequest) returns (DeleteHostResponse) {
+    option (google.api.http) = {delete: "/v1/hosts/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Delete a Host."};
+  }
+}
+
+message GetHostRequest {
+  string id = 1; // @gotags: `class:"public"`
+}
+
+message GetHostResponse {
+  api.resources.hosts.v1.Host item = 1;
+}
+
+message ListHostsRequest {
+  string host_catalog_id = 1 [json_name = "host_catalog_id"]; // @gotags: `class:"public"`
+  string filter = 30 [json_name = "filter"]; // @gotags: `class:"public"`
+}
+
+message ListHostsResponse {
+  repeated api.resources.hosts.v1.Host items = 1;
+}
+
+message CreateHostRequest {
+  api.resources.hosts.v1.Host item = 1;
+}
+
+message CreateHostResponse {
+  string uri = 1; // @gotags: `class:"public"`
+  api.resources.hosts.v1.Host item = 2;
+}
+
+message UpdateHostRequest {
+  string id = 1; // @gotags: `class:"public"`
+  api.resources.hosts.v1.Host item = 2;
+  google.protobuf.FieldMask update_mask = 3 [json_name = "update_mask"];
+}
+
+message UpdateHostResponse {
+  api.resources.hosts.v1.Host item = 1;
+}
+
+message DeleteHostRequest {
+  string id = 1; // @gotags: `class:"public"`
+}
+
+message DeleteHostResponse {}

@@ -1,0 +1,65 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
+syntax = "proto3";
+
+package controller.api.services.v1;
+
+import "controller/api/resources/authtokens/v1/authtoken.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+
+service AuthTokenService {
+  // GetAuthToken returns a stored Auth Token if present.  The provided request
+  // must include the Auth Token id and if it is missing, malformed or
+  // referencing a non existing resource an error is returned.
+  rpc GetAuthToken(GetAuthTokenRequest) returns (GetAuthTokenResponse) {
+    option (google.api.http) = {
+      get: "/v1/auth-tokens/{id}"
+      response_body: "item"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Gets a single Auth Token."};
+  }
+
+  // ListAuthTokens returns a list of stored Auth Tokens which exist inside
+  // the provided scope.  The request must include the scope ids for
+  // the Auth Tokens being listed.  If the scope id is missing, malformed, or
+  // referencing a non existing resource, an error is returned.
+  rpc ListAuthTokens(ListAuthTokensRequest) returns (ListAuthTokensResponse) {
+    option (google.api.http) = {get: "/v1/auth-tokens"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Lists all Auth Tokens."};
+  }
+
+  // DeleteAuthToken removes a Auth Token from Boundary. If the provided
+  // Auth Token id is malformed or not provided an error is returned.
+  rpc DeleteAuthToken(DeleteAuthTokenRequest) returns (DeleteAuthTokenResponse) {
+    option (google.api.http) = {delete: "/v1/auth-tokens/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Deletes an Auth Token."};
+  }
+}
+
+message GetAuthTokenRequest {
+  string id = 1; // @gotags: `class:"public"`
+}
+
+message GetAuthTokenResponse {
+  resources.authtokens.v1.AuthToken item = 1;
+}
+
+message ListAuthTokensRequest {
+  string scope_id = 1 [json_name = "scope_id"]; // @gotags: `class:"public"`
+  bool recursive = 20 [json_name = "recursive"]; // @gotags: `class:"public"`
+  string filter = 30 [json_name = "filter"]; // @gotags: `class:"public"`
+}
+
+message ListAuthTokensResponse {
+  repeated resources.authtokens.v1.AuthToken items = 1;
+}
+
+message DeleteAuthTokenRequest {
+  string id = 1; // @gotags: `class:"public"`
+}
+
+message DeleteAuthTokenResponse {}

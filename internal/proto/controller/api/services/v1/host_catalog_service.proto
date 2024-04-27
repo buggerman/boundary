@@ -1,0 +1,120 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
+syntax = "proto3";
+
+package controller.api.services.v1;
+
+import "controller/api/resources/hostcatalogs/v1/host_catalog.proto";
+import "controller/custom_options/v1/options.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/hashicorp/boundary/internal/gen/controller/api/services;services";
+option (custom_options.v1.domain) = "host";
+
+service HostCatalogService {
+  // GetHostCatalog returns a stored Host Catalog if present.  The provided
+  // request must include the Catalog IDs for the Host Catalog being retrieved.
+  // If missing, malformed, or referencing a non-existing resource an error is
+  // returned.
+  rpc GetHostCatalog(GetHostCatalogRequest) returns (GetHostCatalogResponse) {
+    option (google.api.http) = {
+      get: "/v1/host-catalogs/{id}"
+      response_body: "item"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Gets a single Host Catalog."};
+  }
+
+  // ListHostCatalogs returns a list of stored Host Catalogs which exist inside
+  // the scope referenced in the request. The request must include the scope
+  // ID and if it is  missing, malformed, or references a non-existing resource
+  // an error is returned.
+  rpc ListHostCatalogs(ListHostCatalogsRequest) returns (ListHostCatalogsResponse) {
+    option (google.api.http) = {get: "/v1/host-catalogs"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Gets a list of Host Catalogs."};
+  }
+
+  // CreateHostCatalog creates and stores a Host Catalog in boundary.  The
+  // provided request must include the scope ID in which the Catalog will be
+  // created and the Catalog type to be created. If any of these required fields
+  // are missing, malformed, or reference a non-existing parent resource an
+  // error is returned.
+  rpc CreateHostCatalog(CreateHostCatalogRequest) returns (CreateHostCatalogResponse) {
+    option (google.api.http) = {
+      post: "/v1/host-catalogs"
+      body: "item"
+      response_body: "item"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Creates a Host Catalog"};
+  }
+
+  // UpdateHostCatalog updates an existing Host Catalog in Boundary. The
+  // provided Host Catalog must not have any read only fields set. The update
+  // mask must be provided and include at least 1 mutable field. To unset a
+  // field's value include that field name in the update mask and don't set the
+  // field in the Host Catalog.
+  rpc UpdateHostCatalog(UpdateHostCatalogRequest) returns (UpdateHostCatalogResponse) {
+    option (google.api.http) = {
+      patch: "/v1/host-catalogs/{id}"
+      body: "item"
+      response_body: "item"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Updates a Host Catalog"};
+  }
+
+  // DeleteHostCatalog removes a Host Catalog and all associated Hosts and Host
+  // sets from Boundary. If the provided Host Catalog IDs is malformed or not
+  // provided DeleteHostCatalog returns an error.
+  rpc DeleteHostCatalog(DeleteHostCatalogRequest) returns (DeleteHostCatalogResponse) {
+    option (google.api.http) = {delete: "/v1/host-catalogs/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {summary: "Deletes a Host Catalog"};
+  }
+}
+
+message GetHostCatalogRequest {
+  string id = 1; // @gotags: `class:"public"`
+}
+
+message GetHostCatalogResponse {
+  api.resources.hostcatalogs.v1.HostCatalog item = 1;
+}
+
+message ListHostCatalogsRequest {
+  string scope_id = 1 [json_name = "scope_id"]; // @gotags: `class:"public"`
+  bool recursive = 20 [json_name = "recursive"]; // @gotags: `class:"public"`
+  string filter = 30 [json_name = "filter"]; // @gotags: `class:"public"`
+}
+
+message ListHostCatalogsResponse {
+  repeated api.resources.hostcatalogs.v1.HostCatalog items = 1;
+}
+
+message CreateHostCatalogRequest {
+  api.resources.hostcatalogs.v1.HostCatalog item = 1;
+  // As an alternative to providing the plugin id in the provided HostCatalog,
+  // this field can be used to lookup the plugin using its name.
+  string plugin_name = 2 [json_name = "plugin_name"]; // @gotags: `class:"public"`
+}
+
+message CreateHostCatalogResponse {
+  string uri = 1; // @gotags: `class:"public"`
+  api.resources.hostcatalogs.v1.HostCatalog item = 2;
+}
+
+message UpdateHostCatalogRequest {
+  string id = 1; // @gotags: `class:"public"`
+  api.resources.hostcatalogs.v1.HostCatalog item = 2;
+  google.protobuf.FieldMask update_mask = 3;
+}
+
+message UpdateHostCatalogResponse {
+  api.resources.hostcatalogs.v1.HostCatalog item = 1;
+}
+
+message DeleteHostCatalogRequest {
+  string id = 1; // @gotags: `class:"public"`
+}
+
+message DeleteHostCatalogResponse {}

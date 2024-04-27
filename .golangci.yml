@@ -1,0 +1,17 @@
+linters:
+  disable-all: true
+  enable:
+    - staticcheck
+    - stylecheck
+
+issues:
+  exclude-rules:
+    - linters:
+        - stylecheck
+      text: "ST1005:"
+    - linters:
+        - stylecheck
+      text: "ST1003:"
+    - linters:
+        - staticcheck
+      text: "SA1019: pbs.AuthorizedWorkerList is deprecated:"
