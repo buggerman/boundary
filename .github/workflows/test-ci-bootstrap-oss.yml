@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1    # TSCCR: loading action configs: failed to query HEAD reference: failed to get advertised references: authorization failed
+        uses: hashicorp/setup-terraform@651471c36a6092792c552e8b1bef71e592b462d8    # TSCCR: loading action configs: failed to query HEAD reference: failed to get advertised references: authorization failed
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@e1e17a757e536f70e52b5a12b2e8d1d1c60e04ef # v2.0.0
         with:
